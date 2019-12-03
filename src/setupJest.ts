@@ -1,0 +1,1 @@
+import '../jpa/build/setupJest';
