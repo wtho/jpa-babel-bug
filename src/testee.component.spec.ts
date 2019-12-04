@@ -1,5 +1,5 @@
 import { NgModule, Injectable, Optional } from "@angular/core";
-import { TestBed } from "@angular/core/testing";
+import { TestBed, async } from "@angular/core/testing";
 
 @Injectable()
 export class MessageService {}
@@ -17,11 +17,11 @@ export class SharedModule {
 }
 
 describe("SharedModule", () => {
-  beforeEach(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       providers: [MessageService, { provide: BaseHandler, useClass: MyHandler }]
-    });
-  });
+    }).compileComponents();
+  }));
 
   it("should create", () => {
     expect(SharedModule).toBeDefined();
