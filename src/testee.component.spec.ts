@@ -1,52 +1,27 @@
-import { NgModule, Injectable, Optional, Component } from "@angular/core";
-// import { NGXLogger } from 'ngx-logger';
-// import { MessageService } from 'primeng/api';
-import {
-  MissingTranslationHandler,
-  MissingTranslationHandlerParams,
-  TranslateCompiler,
-  TranslateLoader,
-  TranslateModule,
-  TranslateService
-} from "@ngx-translate/core";
-import { async, TestBed } from "@angular/core/testing";
-import { MessageService } from './message-service';
+import { NgModule, Injectable, Optional } from "@angular/core";
+import { TestBed } from "@angular/core/testing";
 
-@Injectable({ providedIn: "root" })
-export class Logger {
-  constructor(/* private readonly _log: NGXLogger */) {}
-}
+@Injectable()
+export class MessageService {}
 
-// @Injectable({ providedIn: "root" })
+export abstract class BaseHandler {}
+
+// @Injectable() // enable to get working in ts-jest and babel
 export class MyHandler {
-  constructor(
-    @Optional() private messageService: MessageService,
-    private readonly _log: Logger
-  ) {}
+  constructor(@Optional() private messageService: MessageService) {}
 }
 
-@NgModule({
-  imports: [TranslateModule]
-})
+@NgModule({})
 export class SharedModule {
-  constructor(ts: TranslateService, private readonly _log: Logger) {}
+  constructor(ts: BaseHandler) {}
 }
 
 describe("SharedModule", () => {
-  beforeEach(async(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        TranslateModule.forRoot({
-          missingTranslationHandler: {
-            provide: MissingTranslationHandler,
-            useClass: MyHandler
-          },
-          useDefaultLang: false
-        })
-      ],
-      providers: [{ provide: MessageService, useValue: { add: jest.fn() } }]
-    }).compileComponents();
-  }));
+      providers: [MessageService, { provide: BaseHandler, useClass: MyHandler }]
+    });
+  });
 
   it("should create", () => {
     expect(SharedModule).toBeDefined();
