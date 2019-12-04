@@ -1,5 +1,5 @@
 import { Injectable, InjectionToken, Inject } from "@angular/core";
-import { TestBed, async } from "@angular/core/testing";
+import { TestBed } from "@angular/core/testing";
 
 export const TOKEN = new InjectionToken<string>("TOKEN");
 
@@ -9,14 +9,14 @@ export class TokenService {
 }
 
 describe("TokenService", () => {
-  beforeEach(async(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         //   TokenService, // enable to get working in ts-jest and babel
         { provide: TOKEN, useValue: "https://github.com" }
       ]
     });
-  }));
+  });
 
   it("should create", () => {
     expect(TestBed.get(TokenService)).toBeDefined();
